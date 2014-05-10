@@ -15,7 +15,7 @@
          background-color: #9abae0;
          box-shadow: inset 1px 1px 5px 1px;
       }
-      h1 {
+      h1, #tool-tip {
           font-family: 'Montserrat', sans-serif;
           font-weight: 400;
 
@@ -55,18 +55,26 @@
       }
       #tool-tip {
         position: absolute;
-
-        width: 100px;
-        height: 100px;
+        width: auto;
+        height: 35px;
         background-color: white;
-        opacity: .5;
+        opacity: .9;
         z-index: 50;
+        border-radius: 15px;
+        text-align: center;
+        color: #3E7BB6;
+        vertical-align: bottom;
+        font-size: 20px;
+        padding: 5px;
+      }
+      #tool-tip p {
+        margin-top: 5px;
       }
 		</style>
 	</head>
 
 	<body>
-		<h1>Carbon Data</h1>
+		<h1>Pollution Data</h1>
 		<div id="map"></div>
     <div id="tool-tip"></div>
 		    <div id="layer_selector" class="cartodb-infobox">
@@ -142,6 +150,7 @@ var col = 'pm25_2000';
 
             //format.native = String.prototype.format;
             return format;
+            
         })();
 
       // create layer selector
@@ -181,12 +190,12 @@ var col = 'pm25_2000';
                      top:   e.pageY
                   });
               };
-
+//Retrieve data to the tooltip
           sublayer.on('featureOver', function(e, pos, latlng, data) {
-            console.log(col, data);
-            $('#tool-tip').html(data[col]);
+            $('#tool-tip').html('<p>' + data[col] + '&mu;g/mm<sub>3</sub></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
+            console.log(data);
           });
             sublayer.on('featureOut', function(e, pos, latlng, data) {
            
