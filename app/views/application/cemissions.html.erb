@@ -2,13 +2,28 @@
 <html>
 	<head>
 		 <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 		<style>
 			html, body, #map {
-        height: 100%;
+        height: 700px;
+        width: 100%;
         padding: 0;
         margin: 0;
+        background-color: #3E7BB6;
       }
+      #map {
+         background-color: #9abae0;
+         box-shadow: inset 1px 1px 5px 1px;
+      }
+      h1 {
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 400;
 
+      }
+      h1 {
+        text-align: center;
+        color: white;
+      }
       #layer_selector {
         position: absolute;
         top: 20px;
@@ -38,21 +53,67 @@
       #layer_selector li.selected {
         background-color: #EEE;
       }
+      #tool-tip {
+        position: absolute;
+
+        width: 100px;
+        height: 100px;
+        background-color: white;
+        opacity: .5;
+        z-index: 50;
+      }
 		</style>
 	</head>
 
 	<body>
 		<h1>Carbon Data</h1>
 		<div id="map"></div>
+    <div id="tool-tip"></div>
 		    <div id="layer_selector" class="cartodb-infobox">
 		      <ul>
 		        <li data="all" class="selected">All Emissions</li>
-		        <li data="1000">Second Layer</li>
-		        <li data="6000">Third Layer</li>
-		      
+		        <li data="2000">2000</li>
+		        <li data="2001">2001</li>
+            <li data="2002">2002</li>
+            <li data="2003">2003</li>
+            <li data="2004">2004</li>
+            <li data="2005">2005</li>
+            <li data="2006">2006</li>
+            <li data="2007">2007</li>
+            <li data="2008">2008</li>
+            <li data="2009">2009</li>
+            <li data="2010">2010</li>
+            <li data="2011">2011</li>
+            <li data="2012">2012</li>
 		      </ul>
 	</body>
-	
+
+	 <script type="cartocss/html" id="pm25_na">
+   /** choropleth visualization */
+
+#pm25_na{
+  polygon-fill: #FFFFB2;
+  polygon-opacity: 0.8;
+  line-color: #FFF;
+  line-width: 0.5;
+  line-opacity: 0.7;
+}
+#pm25_na [ {0} <= 32.54] {
+   polygon-fill: #BD0026;
+}
+#pm25_na [ {0} <= 12.93] {
+   polygon-fill: #F03B20;
+}
+#pm25_na [ {0} <= 8.52] {
+   polygon-fill: #FD8D3C;
+}
+#pm25_na [ {0} <= 5.76] {
+   polygon-fill: #FECC5C;
+}
+#pm25_na [ {0} <= 3.7] {
+   polygon-fill: #FFFFB2;
+}
+    </script>
 		
 		<script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> 
 		 <script>
@@ -66,50 +127,97 @@
 		  //   cartodb.createVis('map', 'http://dmonay.cartodb.com/api/v2/viz/f8048cf2-d857-11e3-a6f8-0e73339ffa50/viz.json');
 		  // }
 
+var col = 'pm25_2000';
+           String.prototype.format = (function (i, safe, arg) {
+            function format() {
+                var str = this,
+                    len = arguments.length + 1;
+
+                for (i = 0; i < len; arg = arguments[i++]) {
+                    safe = typeof arg === 'object' ? JSON.stringify(arg) : arg;
+                    str = str.replace(RegExp('\\{' + (i - 1) + '\\}', 'g'), safe);
+                }
+                return str;
+            }
+
+            //format.native = String.prototype.format;
+            return format;
+        })();
+
+      // create layer selector
+    function main() {
+        var map = new L.Map('map', { 
+          zoomControl: false,
+          center: [43, 0],
+          zoom: 2,
+          scrollWheelZoom: false
+        });
+
+
+        // create a layer with 1 sublayer
+        cartodb.createLayer(map, {
+          user_name: 'pedrocunha',
+          type: 'cartodb',
+          sublayers: [{
+            sql: "SELECT * FROM bathymetry_layers",
+            cartocss: "#bathymetry_layers{ polygon-fill: #598cdb;polygon-opacity: 0.2;line-color: #FFF;line-width: 0;line-opacity: 1;}"
+            }
+            ,{
+            sql: "SELECT * FROM pm25_na WHERE (pm25_2000 >= 0.47 AND pm25_2000 <= 32.54)",
+            cartocss: $('#pm25_na').html().format('pm25_2000'),
+            interactivity: "cartodb_id, the_geom, pm25_2000, pm25_2001, pm25_2002, pm25_2003, pm25_2004, pm25_2005, pm25_2006, pm25_2007, pm25_2008, pm25_2009, pm25_2010, pm25_2011, pm25_2012, country"
+            }]
+
+        }).done(function(layer) {
+          // add the layer to our map which already contains 1 sublayer
+          map.addLayer(layer);
+          sublayer = layer.getSubLayer(1);
+          sublayer.setInteraction(true);
+          createSelector(sublayer);
+
+          var event = function(e){
+                  $('#tool-tip').css({
+                     left:  e.pageX,
+                     top:   e.pageY
+                  });
+              };
+
+          sublayer.on('featureOver', function(e, pos, latlng, data) {
+            console.log(col, data);
+            $('#tool-tip').html(data[col]);
+            $(document).bind('mousemove', event);
+            $('#tool-tip').show();
+          });
+            sublayer.on('featureOut', function(e, pos, latlng, data) {
+           
+            $('#tool-tip').hide();
+            $(document).unbind('mousemove', event, false);
+          });
+
+    });
+  }
+
+      
+      window.onload = main;
+
+      //Selection process
+
+     var styles = {}, selectedStyle;
       // create layer selector
       function createSelector(layer) {
-        var sql = new cartodb.SQL({ user: 'dmonay' });
+        
 
         var $options = $('#layer_selector li');
         $options.click(function(e) {
           // get the area of the selected layer
           var $li = $(e.target);
-          var area = $li.attr('data');
-
-          // deselect all and select the clicked one
-          $options.removeClass('selected');
-          $li.addClass('selected');
-
-          // create query based on data from the layer
-          var query = "select * from countries";
-
-          if(area !== 'all') {
-            query = "select * from countries_pm25 where area > " + area;
-          }
-
-          // change the query in the layer to update the map
-          layer.setSQL(query);
+          var year = $li.attr('data');
+          col = 'pm25_' + year;
+          var style = $('#pm25_na').html().format(col);
+            layer.setCartoCSS(style);
         });
       }
 
-      function main() {
-        cartodb.createVis('map', 'http://dmonay.cartodb.com/api/v2/viz/f8048cf2-d857-11e3-a6f8-0e73339ffa50/viz.json', {
-          tiles_loader: true,
-          center_lat: 50,
-          center_lon: 20,
-          zoom: 2
-        })
-        .done(function(vis, layers) {
-          // layer 0 is the base layer, layer 1 is cartodb layer
-          var subLayer = layers[1].getSubLayer(0);
-          createSelector(subLayer);
-        })
-        .error(function(err) {
-          console.log(err);
-        });
-      }
-
-      window.onload = main;
     </script>
 	
 </script>
