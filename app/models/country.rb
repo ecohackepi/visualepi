@@ -7,23 +7,27 @@ class Country < ActiveRecord::Base
   end
 
   def self.radar_chart(params = nil)
-
-    if params["country"].nil?
+    if params["countries"].nil?
       {
         "year" => "2012",
         "data" => {"countries" => country_categories}
       }
     else
-      country_name = params["country"].downcase.capitalize
-      country = Country.find_by(country: country_name)
-      {
-        "year" => "2012",
-        "data" => {
-          "id" => country.iso,
-          "name" => country,
-          "categories" => country.categories
+      country_names = params["countries"].map do |country|
+        country.downcase.capitalize
+      end
+      countries = country_names.map do |country_name| 
+        country = Country.find_by(country: country_name)
+        {
+          "year" => "2012",
+          "data" => {
+            "id" => country.iso,
+            "name" => country_name,
+            "categories" => country.categories
+          }
         }
-      }
+      end
+
     end
   end
 
