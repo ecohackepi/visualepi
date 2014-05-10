@@ -5,12 +5,12 @@ class ApplicationController < ActionController::Base
 
   def radar_chart
     respond_to do |f|
-      f.json {render json: Country.radar_chart.to_json.html_safe }
+      f.json {render json: Country.radar_chart(radar_chart_params).to_json.html_safe }
     end
   end
 
   private
     def radar_chart_params
-      permit("year", "country")
+      params.permit("country")
     end
 end

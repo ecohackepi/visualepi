@@ -6,11 +6,25 @@ class Country < ActiveRecord::Base
     year = params["country"]
   end
 
-  def self.radar_chart
-    {
-      "year" => "2012",
-      "data" => {"countries" => country_categories}
-    }
+  def self.radar_chart(params = nil)
+
+    if params["country"].nil?
+      {
+        "year" => "2012",
+        "data" => {"countries" => country_categories}
+      }
+    else
+      country_name = params["country"].downcase.capitalize
+      country = Country.find_by(country: country_name)
+      {
+        "year" => "2012",
+        "data" => {
+          "id" => country.iso,
+          "name" => country,
+          "categories" => country.categories
+        }
+      }
+    end
   end
 
   def self.country_categories
