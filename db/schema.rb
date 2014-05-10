@@ -11,9 +11,51 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20140510185155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "countries", force: true do |t|
+    t.string   "year"
+    t.string   "code"
+    t.string   "iso"
+    t.string   "country"
+    t.string   "ACCESS"
+    t.string   "ACSAT"
+    t.string   "AGSUB"
+    t.string   "AZE"
+    t.string   "CHMORT"
+    t.string   "CLIMATE"
+    t.string   "CO2GDPd1"
+    t.string   "CO2GDPd2"
+    t.string   "CO2KWH"
+    t.string   "FORCH"
+    t.string   "FSOC"
+    t.string   "HAP"
+    t.string   "MPAEEZ"
+    t.string   "PACOVD"
+    t.string   "PACOVW"
+    t.string   "PM25"
+    t.string   "PM25EXBL"
+    t.string   "POPS"
+    t.string   "TCEEZ"
+    t.string   "WASTECXN"
+    t.string   "WATSUP"
+    t.string   "EH_AirQuality"
+    t.string   "EH_HealthImpacts"
+    t.string   "EH_WaterSanitation"
+    t.string   "EV_Agriculture"
+    t.string   "EV_BiodiversityHabitat"
+    t.string   "EV_ClimateEnergy"
+    t.string   "EV_Fisheries"
+    t.string   "EV_Forests"
+    t.string   "EV_WaterResources"
+    t.string   "EH"
+    t.string   "EV"
+    t.string   "EPI"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
