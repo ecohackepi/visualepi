@@ -8,14 +8,16 @@ class Country < ActiveRecord::Base
 
   def self.radar_chart
     {
-      "countries" => country_categories
+      "year" => "2012",
+      "data" => {"countries" => country_categories}
     }
   end
 
   def self.country_categories
     all.map do |country|
       {
-        "name" => country.iso,
+        "id" => country.iso,
+        "name" => country.country,
         "categories" => country.categories
       }
     end
