@@ -66,4 +66,5 @@ test:
 #   postgres://myuser:mypass@localhost/somedatabase
 #
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  <<: *default
+  database: visualapi_production
