@@ -59,10 +59,10 @@ class Country < ActiveRecord::Base
   end
 
   def self.iso_code_list
-    Country.pluck(:iso, :country).to_h
+    Hash[Country.pluck(:iso, :country).flatten]
   end
 
   def self.country_list
-    Country.pluck(:country, :iso).to_h
+    Hash[Country.pluck(:country, :iso).flatten]
   end
 end
