@@ -1,49 +1,33 @@
 class Country < ActiveRecord::Base
 
-  CATEGORIES = ["EH_AirQuality", "EH_HealthImpacts", "EH_WaterSanitation", "EV_Agriculture", "EV_BiodiversityHabitat", "EV_ClimateEnergy", "EV_Fisheries", "EV_Forests", "EV_WaterResources"]
-  def self.new_from_params(params)
-    year = params["year"]
-    year = params["country"]
+  INDICATOR_NAMES = ["EH_AirQuality", "EH_HealthImpacts", "EH_WaterSanitation", "EV_Agriculture", "EV_BiodiversityHabitat", "EV_ClimateEnergy", "EV_Fisheries", "EV_Forests", "EV_WaterResources"]
+  COUNTRY_NAMES = Country.pluck(:country)
+  YEARS = [2012]
+
+  def self.countries_from_params(params)
+    params['countries'] || []
   end
 
-  def self.radar_chart(params = nil)
-    if params["countries"].nil?
-      {
-        "year" => "2012",
-        "data" => {"countries" => country_categories}
-      }
-    else
-      country_names = params["countries"].map do |country|
-        country.downcase.capitalize
-      end
-      countries = country_names.map do |country_name| 
-        country = Country.find_by(country: country_name)
+  def self.radar_chart(params)
+    country_names = params['countries'] || COUNTRY_NAMES
+    indicator_names = params['indicators'] || INDICATOR_NAMES
+    years = params['years'] || YEARS
+    country_names.map do |country_name|
+      country = Country.find_by(country: country_name.downcase.capitalize)
         {
           "year" => "2012",
           "data" => {
             "id" => country.iso,
             "name" => country_name,
-            "categories" => country.categories
+            "indicators" => country.indicators(indicator_names)
           }
         }
-      end
-
     end
   end
 
-  def self.country_categories
-    all.map do |country|
-      {
-        "id" => country.iso,
-        "name" => country.country,
-        "categories" => country.categories
-      }
-    end
-  end
-
-  def categories
-    CATEGORIES.map do |cat|
-      {"name" => cat, "value" => send(cat)}
+  def indicators(indicator_names = INDICATORS)
+    indicator_names.map do |indicator|
+      {"name" => indicator, "value" => send(indicator)}
     end
   end
 end
