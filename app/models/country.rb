@@ -45,18 +45,16 @@ class Country < ActiveRecord::Base
 
   def self.line_graph_data(indicator_name, country_names)
     country_names.map do |country_name|
-      YEARS.map do |year|
-        country = Country.find_by(year: year.to_s, country: country_name.downcase.capitalize)
       {
-          "id" => country.iso,
           "key" => country_name,
-          "values" => {
-            "year" => year.to_s,
-            "value" => country.send(indicator_name)
-          }
+          "values" => YEARS.map do |year|
+            country = Country.find_by(year: year.to_s, country: country_name.downcase.capitalize)
+              {
+                "year" => year.to_s,
+                "value" => country.send(indicator_name)
+              }
+          end
         }
-      end
-    end    
-
+    end
   end
 end
