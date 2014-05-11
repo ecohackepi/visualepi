@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'capistrano', '2.15.5'
 group :development, :test do 
   gem 'rspec-rails'
+  gem 'pry-nav'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
