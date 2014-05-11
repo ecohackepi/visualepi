@@ -14,11 +14,11 @@ class Country < ActiveRecord::Base
     years = params['years'] || YEARS
     years.map do |year|  
       iso_codes.map do |iso_code|
-        country = Country.find_by(year: year.to_s, iso: iso_code)
+        country = Country.find_by(year: year.to_s, iso: iso_code.upcase)
           {
             "year" => year.to_s,
             "data" => {
-              "id" => iso_code,
+              "id" => iso_code.upcase,
               "name" => country.country,
               "indicators" => country.indicators(indicator_names)
             }
@@ -46,9 +46,9 @@ class Country < ActiveRecord::Base
   def self.line_graph_data(indicator_name, iso_codes)
     iso_codes.map do |iso_code|
       {
-          "key" => iso_code,
+          "key" => iso_code.upcase,
           "values" => YEARS.map do |year|
-            country = Country.find_by(year: year.to_s, iso: iso_code)
+            country = Country.find_by(year: year.to_s, iso: iso_code.upcase)
               {
                 "year" => year.to_s,
                 "value" => country.send(indicator_name)
