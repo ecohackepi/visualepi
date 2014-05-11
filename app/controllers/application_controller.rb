@@ -15,6 +15,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def iso_code_list
+    respond_to do |f|
+      f.json {render json: Country.iso_code_list.to_json.html_safe }
+    end
+  end
+
+  def country_list
+    respond_to do |f|
+      f.json {render json: Country.country_list.to_json.html_safe }
+    end
+  end
+
   private
     def radar_chart_params
       params.permit("countries" => [], "indicators" => [], "years" => [])

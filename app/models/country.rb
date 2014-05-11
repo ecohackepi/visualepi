@@ -57,4 +57,12 @@ class Country < ActiveRecord::Base
         }
     end
   end
+
+  def self.iso_code_list
+    Country.pluck(:iso, :country).to_h
+  end
+
+  def self.country_list
+    Country.pluck(:country, :iso).to_h
+  end
 end

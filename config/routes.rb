@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get 'country_comparison' => 'application#country_comparison'
   get 'radar_chart' => 'application#radar_chart'
   get 'line_graph' => 'application#line_graph'
+  get 'iso_code_list' => 'application#iso_code_list'
+  get 'country_list' => 'application#country_list'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
