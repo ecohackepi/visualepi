@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'application#index'
-  get 'cemissions' => 'application#world_pollution'
+  get 'world_pollution' => 'application#world_pollution'
   get 'country_comparison' => 'application#country_comparison'
   get 'radar_chart' => 'application#radar_chart'
   get 'line_graph' => 'application#line_graph'
