@@ -5,8 +5,6 @@
      <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 		<style>
 			html, body, #map {
-        height: 700px;
-        width: 100%;
         padding: 0;
         margin: 0;
         background-color: #3E7BB6;
@@ -14,6 +12,10 @@
       #map {
          background-color: #9abae0;
          box-shadow: inset 1px 1px 5px 1px;
+         margin: 0 auto;
+         height: 700px;
+        width: 1050px;
+        display: block;
       }
       h1, 
       #tool-tip,
@@ -26,9 +28,9 @@
         color: white;
       }
       #layer_selector {
-        position: absolute;
-        top: 70px;
-        right: 250px;
+        width: 610px;
+        margin: 0 auto;
+        display: block;
         padding: 0;
       }
 
@@ -73,10 +75,13 @@ transition: color 2s;
       #tool-tip p {
         margin-top: 5px;
       }
+      .tool-tip-notation {
+        font-size: 15px;
+      }
       .selected {
         background-color: red;
       }
-      #header_container { opacity: .7; height:60px; left:0; position:fixed; width:100%; top:0; }
+      #header_container { opacity: .7; height:60px; left:160px; position:fixed; width:100%; top:70px; }
       #header{ margin:0 auto; width:940px; text-align:center; }
 		</style>
 	</head>
@@ -165,7 +170,7 @@ var col = 'pm25_2000';
     function main() {
         var map = new L.Map('map', { 
           zoomControl: false,
-          center: [43, 0],
+          center: [43, 10],
           zoom: 2,
           scrollWheelZoom: false
         });
@@ -200,7 +205,7 @@ var col = 'pm25_2000';
               };
 //Retrieve data to the tooltip
           sublayer.on('featureOver', function(e, pos, latlng, data) {
-            $('#tool-tip').html('<p>' + data[col] + '&mu;g/mm<sub>3</sub></p>');
+            $('#tool-tip').html('<p>' + data[col] + ' &mu;g/mm<sub>3</sub></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
             
