@@ -1,7 +1,7 @@
 class Country < ActiveRecord::Base
 
   INDICATOR_NAMES = ["EH_AirQuality", "EH_HealthImpacts", "EH_WaterSanitation", "EV_Agriculture", "EV_BiodiversityHabitat", "EV_ClimateEnergy", "EV_Fisheries", "EV_Forests", "EV_WaterResources"]
-  COUNTRY_NAMES = Country.pluck(:country)
+  ISO_CODES = Country.pluck(:iso)
   YEARS = (2002..2012).to_a
 
   def self.countries_from_params(params)
@@ -9,17 +9,17 @@ class Country < ActiveRecord::Base
   end
 
   def self.radar_chart(params)
-    country_names = params['countries'] || COUNTRY_NAMES
+    iso_codes = params['iso_codes'] || ISO_CODES
     indicator_names = params['indicators'] || INDICATOR_NAMES
     years = params['years'] || YEARS
     years.map do |year|  
-      country_names.map do |country_name|
-        country = Country.find_by(year: year.to_s, country: country_name.downcase.capitalize)
+      iso_codes.map do |iso_code|
+        country = Country.find_by(year: year.to_s, iso: iso_code)
           {
             "year" => year.to_s,
             "data" => {
-              "id" => country.iso,
-              "name" => country_name,
+              "id" => iso_code,
+              "name" => country.country,
               "indicators" => country.indicators(indicator_names)
             }
           }
@@ -34,21 +34,21 @@ class Country < ActiveRecord::Base
   end
 
   def self.line_graph(params)
-    country_names = params['countries'].map { |name| name.downcase.capitalize }
+    iso_codes = params['iso_codes']
     indicator_name = params['indicator']
 
     {
       "indicator" => indicator_name,
-      "data" => line_graph_data(indicator_name, country_names)
+      "data" => line_graph_data(indicator_name, iso_codes)
     }
   end
 
-  def self.line_graph_data(indicator_name, country_names)
-    country_names.map do |country_name|
+  def self.line_graph_data(indicator_name, iso_codes)
+    iso_codes.map do |iso_code|
       {
-          "key" => country_name,
+          "key" => iso_code,
           "values" => YEARS.map do |year|
-            country = Country.find_by(year: year.to_s, country: country_name.downcase.capitalize)
+            country = Country.find_by(year: year.to_s, iso: iso_code)
               {
                 "year" => year.to_s,
                 "value" => country.send(indicator_name)
