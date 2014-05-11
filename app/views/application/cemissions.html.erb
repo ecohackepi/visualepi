@@ -15,10 +15,11 @@
          background-color: #9abae0;
          box-shadow: inset 1px 1px 5px 1px;
       }
-      h1, #tool-tip {
+      h1, 
+      #tool-tip,
+      #layer_selector li {
           font-family: 'Montserrat', sans-serif;
           font-weight: 400;
-
       }
       h1 {
         text-align: center;
@@ -26,8 +27,8 @@
       }
       #layer_selector {
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 70px;
+        right: 250px;
         padding: 0;
       }
 
@@ -38,15 +39,17 @@
 
       #layer_selector li {
         border-bottom: 1px solid #999;
-        padding: 15px 30px;
-        font-family: "Helvetica", Arial;
+        padding-left: 5px;
+        padding-right: 5px;
         font-size: 13px;
         color: #444;
         cursor: auto;
+        display: inline;
+        -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
+transition: color 2s;
       }
-
       #layer_selector li:hover {
-        background-color: #F0F0F0;
+        color: #3E7BB6;
         cursor: pointer;
       }
 
@@ -70,16 +73,22 @@
       #tool-tip p {
         margin-top: 5px;
       }
+      .selected {
+        background-color: red;
+      }
+      #header_container { opacity: .7; height:60px; left:0; position:fixed; width:100%; top:0; }
+      #header{ margin:0 auto; width:940px; text-align:center; }
 		</style>
 	</head>
 
 	<body>
-		<h1>Pollution Data</h1>
+		<h1>Pollution Over Time</h1>
 		<div id="map"></div>
     <div id="tool-tip"></div>
+    <div id="header_container">
+      <div id="header">
 		    <div id="layer_selector" class="cartodb-infobox">
 		      <ul>
-		        <li data="all" class="selected">All Emissions</li>
 		        <li data="2000">2000</li>
 		        <li data="2001">2001</li>
             <li data="2002">2002</li>
@@ -94,6 +103,11 @@
             <li data="2011">2011</li>
             <li data="2012">2012</li>
 		      </ul>
+        </div>
+      </div>
+          
+        
+
 	</body>
 
 	 <script type="cartocss/html" id="pm25_na">
@@ -125,16 +139,10 @@
 		
 		<script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> 
 		 <script>
-		  // get the viz.json url from the CartoDB UI
-		  // - click on visualize
-		  // - create new visualization
-		  // - make visualization public
-		  // - click on publish
-		  // - go to API tab
-		  // window.onload = function() {
-		  //   cartodb.createVis('map', 'http://dmonay.cartodb.com/api/v2/viz/f8048cf2-d857-11e3-a6f8-0e73339ffa50/viz.json');
-		  // }
-
+$('#layer_selector li').click(function() {
+         
+          $('#layer_select li').addClass('selected');
+});
 var col = 'pm25_2000';
            String.prototype.format = (function (i, safe, arg) {
             function format() {
@@ -195,7 +203,7 @@ var col = 'pm25_2000';
             $('#tool-tip').html('<p>' + data[col] + '&mu;g/mm<sub>3</sub></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
-            console.log(data);
+            
           });
             sublayer.on('featureOut', function(e, pos, latlng, data) {
            
