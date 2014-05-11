@@ -8,8 +8,12 @@
 
 require 'csv'    
 
-csv_text = File.read('./lib/assets/countries.csv')
-csv = CSV.parse(csv_text, :headers => true)
-csv.each do |row|
-  Country.create!(row.to_hash)
+Country.delete_all
+years = (2002..2012).to_a
+years.each do |year|
+  csv_text = File.read("./lib/assets/countries#{year}.csv")
+  csv = CSV.parse(csv_text, :headers => true)
+  csv.each do |row|
+    Country.create!(row.to_hash)
+  end
 end
