@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'cemissions' => 'application#cemissions'
   get 'country_comparison' => 'application#country_comparison'
   get 'radar_chart' => 'application#radar_chart'
+  get 'line_graph' => 'application#line_graph'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

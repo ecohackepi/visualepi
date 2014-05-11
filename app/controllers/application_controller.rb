@@ -9,8 +9,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def line_graph
+    respond_to do |f|
+      f.json {render json: Country.line_graph(line_graph_params).to_json.html_safe }
+    end
+  end
+
   private
     def radar_chart_params
       params.permit("countries" => [], "indicators" => [], "years" => [])
+    end
+
+    def line_graph_params
+      params.permit("indicator", "countries" => [], "years" => [])
     end
 end

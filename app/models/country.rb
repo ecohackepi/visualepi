@@ -27,9 +27,36 @@ class Country < ActiveRecord::Base
     end
   end
 
-  def indicators(indicator_names = INDICATORS)
+  def indicators(indicator_names = INDICATOR_NAMES)
     indicator_names.map do |indicator|
       {"name" => indicator, "value" => send(indicator)}
     end
+  end
+
+  def self.line_graph(params)
+    country_names = params['countries'].map { |name| name.downcase.capitalize }
+    indicator_name = params['indicator']
+
+    {
+      "indicator" => indicator_name,
+      "data" => line_graph_data(indicator_name, country_names)
+    }
+  end
+
+  def self.line_graph_data(indicator_name, country_names)
+    country_names.map do |country_name|
+      YEARS.map do |year|
+        country = Country.find_by(year: year.to_s, country: country_name.downcase.capitalize)
+      {
+          "id" => country.iso,
+          "name" => country_name,
+          "values" => {
+            "year" => year.to_s,
+            "value" => country.send(indicator_name)
+          }
+        }
+      end
+    end    
+
   end
 end
