@@ -59,10 +59,10 @@ class Country < ActiveRecord::Base
   end
 
   def self.iso_code_list
-    Hash[Country.pluck(:iso, :country).flatten]
+    Country.pluck(:iso, :country).each_with_object({}){|pair, hash| hash[pair[0]]=pair[1]}
   end
 
   def self.country_list
-    Hash[Country.pluck(:country, :iso).flatten]
+    Country.pluck(:country, :iso).each_with_object({}){|pair, hash| hash[pair[0]]=pair[1]}
   end
 end
