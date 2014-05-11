@@ -49,7 +49,7 @@ class Country < ActiveRecord::Base
         country = Country.find_by(year: year.to_s, country: country_name.downcase.capitalize)
       {
           "id" => country.iso,
-          "name" => country_name,
+          "key" => country_name,
           "values" => {
             "year" => year.to_s,
             "value" => country.send(indicator_name)
