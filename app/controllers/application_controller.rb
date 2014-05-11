@@ -11,6 +11,6 @@ class ApplicationController < ActionController::Base
 
   private
     def radar_chart_params
-      params.permit("countries" => [])
+      params.permit("countries" => [], "indicators" => [], "years" => [])
     end
 end
