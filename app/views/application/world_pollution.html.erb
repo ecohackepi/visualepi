@@ -20,7 +20,7 @@
         background-color: #ff8a87;
       } 
 
-      h1, 
+       
       #tool-tip,
       #layer_selector li {
           font-family: 'Montserrat', sans-serif;
@@ -28,7 +28,9 @@
       }
       h1 {
         text-align: center;
-        color: white;
+        color: #1d1d1d;
+        text-transform: uppercase;
+        font-family: arial;
       }
   
 
@@ -108,22 +110,70 @@
         font-size: 20px;
         padding: 5px;
       }
+      #infowindow_template {
+        position: absolute;
+        right:0;
+        bottom:120px;
+        width: 420px;
+        height: auto;
+        background-color: white;
+        opacity: .98;
+        z-index: 50;
+        border-radius: 15px;
+        text-align: left;
+        color: #5a5858;
+        vertical-align: bottom;
+        font-size: 15px;
+        padding: 15px;
 
-
+      }
+      .leaflet-control-attribution {display: none;}
       #tool-tip p {
         margin-top: 5px;
       }
 
-      #header_container { opacity: .7; height:60px; left:0; position:fixed; width:100%; top:0; }
-      #header{ margin:0 auto; width:940px; text-align:center; }
+      #header_container { opacity: .7; height:60px; position:fixed; width:1200px; margin:0 auto; bottom:60px; }
+      #header{ margin:0 auto; width:80%; display:block; text-align:center; }
+
+      span {
+        color:#323232;
+        text-transform: uppercase;
+        font-size: 10px;
+        font-family: arial;
+        text-align: center;
+        display: block;
+      }
+
+      a {
+        color:#4c52ff;
+        text-decoration: none;
+      }
+
+      .cartodb-legend {
+
+        display: block;
+      }
     </style>
   </head>
 
   <body>
-    <h1>Pollution Over Time</h1>
+    
     <div id="map"></div>
     <div id="tool-tip"></div>
-    
+    <div class="cartodb-legend choropleth"></div>
+    <div id="infowindow_template">
+    <h1>Air pollution trends in countries and cities</h1>
+      The <a href="http://epi.yale.edu" target="blank">Environmental Performance Index (EPI)</a> ranks countries on performance indicators tracked across 10 environmental policy categories, including air, water, climate change and energy, forestry, and fisheries. These indicators provide a gauge of how close countries are to established environmental policy goals.<br><br>
+
+<span style="font-size:20px;"><b>DESCRIPTION</b></span>
+Twenty years after the landmark Rio Earth Summit, governments still struggle to demonstrate improved environmental performance through quantitative metrics across a range of pollution control and natural resource management challenges. With budgetary constraints an issue around the world, governments face increasing pressure to show tangible results from their environmental investments.<br><br>
+
+Given this context, the <a href="http://envirocenter.yale.edu" target="blank">Yale Center for Environmental Law and Policy</a> and the <a href="http://ciesin.columbia.edu" target="blank">Center for International Earth Science Information Network</a> at The Earth Institute, Columbia University developed the EPI with the goal that it would be analogous to environmental progress as Gross Domestic Product (GDP) has become an indicator of economic development.<br><br>
+
+<span style="font-size:20px;"><b>COMPARE RESULTS</b></span>
+A key innovation of the 2012 EPI is the incorporation of time series data that can allow for countries to understand how their performance has changed over time.<br><br>
+<span>Created by <a href="http://spinsomewebs.com/" target="_blank">Pedro Cunha</a> and <a href="http://www.dmitrypavluk.com" target="_blank">Dmitry Pavluk</a> using CartoDB.</span>
+    </div>
     <div id="header_container">
       <div id="header">
         <div id="layer_selector" class="cartodb-infobox">
@@ -157,6 +207,8 @@
 
   </body>
   <script type="cartocss/html" id="cities">
+  /*City Styles*/
+
 #who_georeferenced_clean{
   marker-fill-opacity: 0.8;
   marker-line-color: #FFF;
@@ -191,7 +243,7 @@
   </script>
 
    <script type="cartocss/html" id="pm25_na">
-   /*City Styles*/
+   /*Country Styles*/
 
 #pm25_na{
   polygon-fill: #FFFFB2;
@@ -201,31 +253,31 @@
   line-opacity: 1;
 }
 #pm25_na [ pm25_2000 <= 32.54] {
-   polygon-fill: #B10026;
+   polygon-fill: #870000;
 }
 #pm25_na [ pm25_2000 <= 25.17] {
-   polygon-fill: #e34444;
+   polygon-fill: #c30000;
 }
 #pm25_na [ pm25_2000 <= 15.17] {
-   polygon-fill: #E31A1C;
+   polygon-fill: #f50000;
 }
 #pm25_na [ pm25_2000 <= 10.85] {
-   polygon-fill: #FC4E2A;
+   polygon-fill: #FF3200;
 }
 #pm25_na [ pm25_2000 <= 9.15] {
-   polygon-fill: #fd6f27;
+   polygon-fill: #FF5a00;
 }
 #pm25_na [ pm25_2000 <= 8.15] {
-   polygon-fill: #FD8D3C;
+   polygon-fill: #FF8200;
 }
 #pm25_na [ pm25_2000 <= 6.06] {
-   polygon-fill: #FEB24C;
+   polygon-fill: #FFaa00;
 }
 #pm25_na [ pm25_2000 <= 4.62] {
-   polygon-fill: #FED976;
+   polygon-fill: #ffd72d;
 }
 #pm25_na [ pm25_2000 <= 2.98] {
-   polygon-fill: #fffde2;
+   polygon-fill: #fff74b;
 }
     </script>
 
@@ -263,6 +315,7 @@
     function main() {
         var map = new L.Map('map', { 
           zoomControl: true,
+          legend:true,
           center: [43, 0],
           zoom: 2,
           scrollWheelZoom: true,
@@ -300,9 +353,9 @@
           sublayer_city.hide();
 
           //create infowindow
-          //  sublayer_city.infowindow.set('template', $('#infowindow_template').html()).on('error', function() {
-          //  console.log("some error occurred");
-          //});
+            sublayer_city.infowindow.set('template', $('#infowindow_template').html()).on('error', function() {
+            console.log("some error occurred");
+          });
           
           //Make Tool-tip follow the mouse.
           var event = function(e){
@@ -313,7 +366,7 @@
               };
 //Retrieve data to the tooltip on countries
           sublayer_country.on('featureOver', function(e, pos, latlng, data) {
-            $('#tool-tip').html('<p>'  +data[country]+'<br>'+ data[col1] + '&mu;g/mm<sub>3</sub></p>');
+            $('#tool-tip').html('<p>'  +data[country]+'<br>'+ data[col1] + '&mu;g/mm<sup>3</sup></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
             
@@ -325,7 +378,7 @@
           });
 //Retrieve data to the tooltip on cities
             sublayer_city.on('featureOver', function(e, pos, latlng, data) {
-            $('#tool-tip').html('<p>'  +data[city]+', '+data[country]+  '<br>'+data[pm]+ '&mu;g/mm<sub>3</sub></p>');
+            $('#tool-tip').html('<p>'  +data[city]+', '+data[country]+  '<br>'+data[pm]+ '&mu;g/mm<sup>3</sup></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
             
@@ -371,6 +424,7 @@
 
           $('#show_cities').removeClass();
           $('#hide_cities').addClass('selected');
+          $(".cartodb-legend:nth-child(1)").show();
           }); 
         }
 
@@ -382,7 +436,9 @@
           // deselect all and select the clicked one
           $options2.removeClass('selected');
           $li.addClass('selected');
+
           }); 
+
 
   $("#show_cities").on("click", function(){
             //Set the column to the city_station from our cities table
@@ -392,13 +448,14 @@
             //Attached the CSS to the layer
             sublayer_city.setCartoCSS(style);
              sublayer_city.show();
+             $(".cartodb-legend:nth-child(2)").show();
            });
           //Hide the cities on click
           $("#hide_cities").on("click", function(){
              sublayer_city.hide();
               var year = $('#layer_selector li.selected').attr('data');
               col1 = 'pm25_' + year;
-             console.log(col1);
+             $(".cartodb-legend:nth-child(2)").hide();
            });
        
     </script>
