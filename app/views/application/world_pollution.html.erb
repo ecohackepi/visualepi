@@ -11,10 +11,15 @@
         margin: 0;
         background-color: #3E7BB6;
       }
+
       #map {
          background-color: #9abae0;
          box-shadow: inset 1px 1px 5px 1px;
       }
+      .selected {
+        background-color: #ff8a87;
+      } 
+
       h1, 
       #tool-tip,
       #layer_selector li {
@@ -85,7 +90,7 @@
       }
 
       #layer_selector li.selected {
-        color: red;
+        color: white;
       }
       #tool-tip {
         position: absolute;
@@ -137,7 +142,7 @@
         <div id="layer_selector2" class="cartodb-infobox">
           <ul>
               <li data="pm_2_5" id="show_cities">Show Cities</li> 
-              <li  id="hide_cities">Hide Cities</li>
+              <li  id="hide_cities" class="selected">Hide Cities</li>
           </ul>
         </div>
         
@@ -346,6 +351,16 @@
             sublayer_city.hide();
           }); 
         }
+
+        //show and hide cities
+          var $options2 = $('#layer_selector2 li');
+          $options2.click(function(e) {
+          // get the area of the selected layer
+          var $li = $(e.target);
+          // deselect all and select the clicked one
+          $options2.removeClass('selected');
+          $li.addClass('selected');
+          }); 
 
   $("#show_cities").on("click", function(){
             //Set the column to the city_station from our cities table
