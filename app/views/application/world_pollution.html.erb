@@ -343,6 +343,7 @@
           col = 'pm25_' + year;
           var style = $('#pm25_na').html().format(col);
             layer.setCartoCSS(style);
+            sublayer_city.hide();
           }); 
         }
 
@@ -358,6 +359,9 @@
           //Hide the cities on click
           $("#hide_cities").on("click", function(){
              sublayer_city.hide();
+              var year = $('#layer_selector li.selected').attr('data');
+              col = 'pm25_' + year;
+             console.log(col);
            });
        
     </script>
