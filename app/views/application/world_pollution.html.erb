@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		 <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+  <head>
+     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
      <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-		<style>
-			html, body, #map {
+    <style>
+      html, body, #map {
         height: 700px;
         width: 100%;
         padding: 0;
@@ -22,7 +22,6 @@
 
       h1, 
       #tool-tip,
-      #layer_selector2,
       #layer_selector li {
           font-family: 'Montserrat', sans-serif;
           font-weight: 400;
@@ -83,6 +82,8 @@
         display: inline;
         -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
         transition: color 2s;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
       }
 
       #layer_selector li:hover {
@@ -107,25 +108,28 @@
         font-size: 20px;
         padding: 5px;
       }
+
+
       #tool-tip p {
         margin-top: 5px;
       }
 
       #header_container { opacity: .7; height:60px; left:0; position:fixed; width:100%; top:0; }
       #header{ margin:0 auto; width:940px; text-align:center; }
-		</style>
-	</head>
+    </style>
+  </head>
 
-	<body>
-		<h1>Pollution Over Time</h1>
-		<div id="map"></div>
+  <body>
+    <h1>Pollution Over Time</h1>
+    <div id="map"></div>
     <div id="tool-tip"></div>
+    
     <div id="header_container">
       <div id="header">
-		    <div id="layer_selector" class="cartodb-infobox">
-		      <ul>
-		        <li data="2000" class="selected">2000</li>
-		        <li data="2001">2001</li>
+        <div id="layer_selector" class="cartodb-infobox">
+          <ul>
+            <li data="2000" class="selected">2000</li>
+            <li data="2001">2001</li>
             <li data="2002">2002</li>
             <li data="2003">2003</li>
             <li data="2004">2004</li>
@@ -137,7 +141,7 @@
             <li data="2010">2010</li>
             <li data="2011">2011</li>
             <li data="2012">2012</li>  
-		      </ul>
+          </ul>
 
         </div>
         <div id="layer_selector2" class="cartodb-infobox">
@@ -151,7 +155,7 @@
           
         
 
-	</body>
+  </body>
   <script type="cartocss/html" id="cities">
 #who_georeferenced_clean{
   marker-fill-opacity: 0.8;
@@ -186,7 +190,7 @@
 
   </script>
 
-	 <script type="cartocss/html" id="pm25_na">
+   <script type="cartocss/html" id="pm25_na">
    /*City Styles*/
 
 #pm25_na{
@@ -222,13 +226,14 @@
 }
     </script>
 
-		<script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> 
-		 
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> 
+     
      <script>
           $('#layer_selector li').click(function() {        
             $('#layer_select li').addClass('selected');
           });
-          var col = 'pm25_2000';
+          var col1 = 'pm25_2000';
+          var col2 = '';
           var country = 'country';
           var city = 'city_station';
           var pm = 'pm_2_5';
@@ -257,7 +262,8 @@
           zoomControl: true,
           center: [43, 0],
           zoom: 2,
-          scrollWheelZoom: true
+          scrollWheelZoom: true,
+          searchControl: true
         });
 
 
@@ -269,13 +275,13 @@
             sql: "SELECT * FROM bathymetry_layers",
             cartocss: "#bathymetry_layers{ polygon-fill: #598cdb;polygon-opacity: 0.2;line-color: #FFF;line-width: 0;line-opacity: 1;}"
             },{
-            sql: "SELECT * FROM pm25_na WHERE (pm25_2000 >= 0.47 AND pm25_2000 <= 32.54)",
+            sql: "SELECT * FROM pm25_na",
             cartocss: $('#pm25_na').html().format('pm25_2000'),
             interactivity: "cartodb_id, the_geom, pm25_2000, pm25_2001, pm25_2002, pm25_2003, pm25_2004, pm25_2005, pm25_2006, pm25_2007, pm25_2008, pm25_2009, pm25_2010, pm25_2011, pm25_2012, country"
             },{
             sql: "SELECT * FROM who_georeferenced_clean",
             cartocss: $('#cities').html().format('city_station'),
-            interactivity: "city_station, pm_2_5"
+            interactivity: "city_station, pm_2_5, country"
             
             }]
 
@@ -289,6 +295,11 @@
           createSelector(sublayer_country);
           createSelector(sublayer_city);
           sublayer_city.hide();
+
+          //create infowindow
+          //  sublayer_city.infowindow.set('template', $('#infowindow_template').html()).on('error', function() {
+          //  console.log("some error occurred");
+          //});
           
           //Make Tool-tip follow the mouse.
           var event = function(e){
@@ -299,7 +310,7 @@
               };
 //Retrieve data to the tooltip on countries
           sublayer_country.on('featureOver', function(e, pos, latlng, data) {
-            $('#tool-tip').html('<p>'  +data[country]+'<br>'+ data[col] + '&mu;g/mm<sub>3</sub></p>');
+            $('#tool-tip').html('<p>'  +data[country]+'<br>'+ data[col1] + '&mu;g/mm<sub>3</sub></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
             
@@ -311,7 +322,7 @@
           });
 //Retrieve data to the tooltip on cities
             sublayer_city.on('featureOver', function(e, pos, latlng, data) {
-            $('#tool-tip').html('<p>'  +data[city]+'<br>'+data[pm]+ '&mu;g/mm<sub>3</sub></p>');
+            $('#tool-tip').html('<p>'  +data[city]+', '+data[country]+  '<br>'+data[pm]+ '&mu;g/mm<sub>3</sub></p>');
             $(document).bind('mousemove', event);
             $('#tool-tip').show();
             
@@ -321,6 +332,9 @@
             $('#tool-tip').hide();
             $(document).unbind('mousemove', event, false);
           });
+
+            
+
             
     });
   }
@@ -346,19 +360,20 @@
           $li.addClass('selected');
 
 
-          col = 'pm25_' + year;
-          var style = $('#pm25_na').html().format(col);
+          col1 = 'pm25_' + year;
+          var style = $('#pm25_na').html().format(col1);
             layer.setCartoCSS(style);
             sublayer_city.hide();
 
-            $('#layer_selector2 li:last-child').addClass('selected');
-            $('#layer_selector2 li:first-child').removeClass('selected');
+
+          $('#show_cities').removeClass();
+          $('#hide_cities').addClass('selected');
           }); 
         }
 
         //show and hide cities
           var $options2 = $('#layer_selector2 li');
-          $options2.click(function(e) {
+          $options2.on("click", function(e) {
           // get the area of the selected layer
           var $li = $(e.target);
           // deselect all and select the clicked one
@@ -368,9 +383,9 @@
 
   $("#show_cities").on("click", function(){
             //Set the column to the city_station from our cities table
-            col = 'city_station';
+            col2 = 'city_station';
             //create a local variable named style and convert our cities script above to html and run the format function defined above to render some CSS.
-             var style = $('#cities').html().format(col);
+             var style = $('#cities').html().format(col2);
             //Attached the CSS to the layer
             sublayer_city.setCartoCSS(style);
              sublayer_city.show();
@@ -379,8 +394,8 @@
           $("#hide_cities").on("click", function(){
              sublayer_city.hide();
               var year = $('#layer_selector li.selected').attr('data');
-              col = 'pm25_' + year;
-             console.log(col);
+              col1 = 'pm25_' + year;
+             console.log(col1);
            });
        
     </script>
