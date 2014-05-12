@@ -22,6 +22,7 @@
 
       h1, 
       #tool-tip,
+      #layer_selector2,
       #layer_selector li {
           font-family: 'Montserrat', sans-serif;
           font-weight: 400;
@@ -349,6 +350,9 @@
           var style = $('#pm25_na').html().format(col);
             layer.setCartoCSS(style);
             sublayer_city.hide();
+
+            $('#layer_selector2 li:last-child').addClass('selected');
+            $('#layer_selector2 li:first-child').removeClass('selected');
           }); 
         }
 
