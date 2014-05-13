@@ -155,7 +155,7 @@
         width: 420px;
         height: auto;
         background-color: white;
-        opacity: .98;
+        opacity: .92;
         z-index: 50;
         border-radius: 15px;
         text-align: left;
@@ -207,7 +207,7 @@ Given this context, the <a href="http://envirocenter.yale.edu" target="blank">Ya
 
 <span style="font-size:20px;"><b>COMPARE RESULTS</b></span>
 A key innovation of the 2012 EPI is the incorporation of time series data that can allow for countries to understand how their performance has changed over time.<br><br>
-<span>Created by <a href="http://spinsomewebs.com/" target="_blank">Pedro Cunha</a> and <a href="http://www.dmitrypavluk.com" target="_blank">Dmitry Pavluk</a> using CartoDB.</span>
+<span>Created by <a href="http://spinsomewebs.com/" target="_blank">Pedro Cunha</a> and <a href="http://www.dmitrypavluk.com" target="_blank">Dmitry Pavluk</a> using CartoDB. With help from <a href="https://twitter.com/andrewxhill" target="_blank">Andrew Hill</a></span>
     </div>
     <div id="header_container">
       <div id="header">
@@ -354,6 +354,11 @@ A key innovation of the 2012 EPI is the incorporation of time series data that c
             
         })();
 
+
+
+
+
+
       // create layer selector
     function main() {
         var map = new L.Map('map', { 
@@ -365,6 +370,7 @@ A key innovation of the 2012 EPI is the incorporation of time series data that c
           searchControl: true
         });
 
+        
 
         // create our layers
         cartodb.createLayer(map, {
@@ -447,7 +453,6 @@ A key innovation of the 2012 EPI is the incorporation of time series data that c
       // create layer selector
       function createSelector(layer) {
 
-
         var $options = $('#layer_selector li');
         $options.click(function(e) {
           // get the area of the selected layer
@@ -468,6 +473,7 @@ A key innovation of the 2012 EPI is the incorporation of time series data that c
           $('#show_cities').removeClass();
           $('#hide_cities').addClass('selected');
           $(".cartodb-legend:nth-child(1)").show();
+
           }); 
         }
 
