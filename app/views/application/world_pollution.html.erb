@@ -3,259 +3,10 @@
   <head>
      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
      <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <style>
-      html, body, #map {
-        height: 700px;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        background-color: #3E7BB6;
-      }
-
-      #map {
-         background-color: #9abae0;
-         box-shadow: inset 1px 1px 5px 1px;
-      }
-      .selected {
-        background-color: #ff8a87;
-      } 
-
-       
-      #tool-tip,
-      #layer_selector li {
-          font-family: 'Montserrat', sans-serif;
-          font-weight: 400;
-      }
-      h1 {
-        text-align: center;
-        color: #1d1d1d;
-        text-transform: uppercase;
-        font-family: arial;
-      }
-  
-
-
-      #layer_selector {
-        position: absolute;
-        top: 70px;
-        right: 350px;
-        padding: 0;
-      }
-
-      #layer_selector ul {
-        padding: 0; margin: 0;
-        list-style-type: none;
-      }
-      
-      #show_cities {cursor: pointer;}
-      #hide_cities {cursor: pointer;}
-
-      #layer_selector li {
-        border-bottom: 1px solid #999;
-        padding-left: 5px;
-        padding-right: 5px;
-        font-size: 13px;
-        color: #444;
-        cursor: pointer;
-        display: inline;
-        -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
-        transition: color 2s;
-      }
-
-      #layer_selector2 {
-        position: absolute;
-        top: 70px;
-        right: 150px;
-        padding: 0;
-      }
-
-      #layer_selector2 ul {
-        padding: 0; margin: 0;
-        list-style-type: none;
-      }
-
-      #layer_selector2 li {
-        border-bottom: 1px solid #999;
-        padding-left: 15px;
-        padding-right: 5px;
-        font-size: 13px;
-        color: #444;
-        cursor: pointer;
-        display: inline;
-        -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
-        transition: color 2s;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 400;
-      }
-      
-      #toggle_window {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-        padding: 0;
-        background-color: white;
-        opacity: 0.7;
-        border-radius: 3px;
-      }
-      
-      #toggle_window ul {
-        padding: 0; margin: 0;
-        list-style-type: none;
-      }
-
-      #toggle_window li {
-        border-bottom: 1px solid #999;
-        padding-left: 15px;
-        padding-right: 5px;
-        font-size: 13px;
-        color: #444;
-        cursor: pointer;
-        display: inline;
-        -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
-        transition: color 2s;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 400;
-      }
-
-      #toggle_window li:hover {
-        color: #3E7BB6;
-        cursor: pointer;
-      }
-
-      #toggle_window li.selected {
-        color: white;
-      }
-
-      #layer_selector li:hover {
-        color: #3E7BB6;
-        cursor: pointer;
-      }
-
-      #layer_selector li.selected {
-        color: white;
-      }
-      #tool-tip {
-        position: absolute;
-        width: auto;
-        height: 55px;
-        background-color: white;
-        opacity: .9;
-        z-index: 50;
-        border-radius: 15px;
-        text-align: center;
-        color: #3E7BB6;
-        vertical-align: bottom;
-        font-size: 20px;
-        padding: 5px;
-      }
-      #infowindow_template {
-        position: absolute;
-        right:0;
-        bottom:120px;
-        width: 720px;
-        height: auto;
-        background-color: white;
-        opacity: .92;
-        z-index: 50;
-        border-radius: 15px;
-        text-align: left;
-        color: #5a5858;
-        vertical-align: bottom;
-        font-size: 14px;
-        padding: 15px;
-
-      }
-      .leaflet-control-attribution {display: none;}
-      #tool-tip p {
-        margin-top: 5px;
-      }
-      .hidden {display: none;}
-      #header_container { opacity: .7; height:60px; position:fixed; width:980px; margin-left:20%; bottom:60px; display: block;}
-      #header{ margin:0 auto; width:80%; display:block; text-align:center; }
-
-      span {
-        color:#323232;
-        text-transform: uppercase;
-        font-size: 10px;
-        font-family: arial;
-        text-align: center;
-        display: block;
-      }
-
-      a {
-        color:#4c52ff;
-        text-decoration: none;
-      }
-      #legends {
-        position: absolute;
-        left:10px;
-        bottom:120px;
-      }
-      .legend {
-        width:340px;
-        height: 93px;
-        background-color: white;
-        border-radius: 10px;
-        margin-top: 10px;
-        border: 1px solid #a4a2a2;
-        box-shadow: 3px 2px 3px black;
-      }
-      .legend div {
-        width:30px;
-        height:22px;
-        display: table-cell;
-        margin:0;
-        padding: 0;
-      }
-      .country_leftest {
-        position: absolute;
-        left:20px;
-        top:46px;
-        font-family: arial;   
-        font-size: 13px;
-        color: #6b6a6a;
-      }
-      .country_rightest {
-        position: absolute;
-        right:20px;
-        top:46px;
-        font-family: arial;   
-        font-size: 13px;
-        color: #6b6a6a;
-      }
-      .city_leftest {
-        position: absolute;
-        left:22px;
-        top:146px;
-        font-family: arial;   
-        font-size: 13px;
-        color: #6b6a6a;
-      }
-      .city_rightest {
-        position: absolute;
-        right:20px;
-        top:146px;
-        font-family: arial;   
-        font-size: 13px;
-        color: #6b6a6a;
-      }
-      .colors {
-        margin-left: 20px;
-        margin-top: 10px;
-        border: 1px solid #a4a2a2;
-        width:300px;
-      }
-      .legend_title {
-        text-align: center;
-        padding-top: 10px;
-        font-family: arial;
-        font-size: 13px;
-        color: #6b6a6a;
-      }
-      .hidden {
-        display: none;
-      }
-    </style>
+     <link href='main_style.css' rel='stylesheet' type='text/css'>
+     <link rel="stylesheet" media="(max-height: 700px)" href="small.css">
+     <script type="text/javascript" src="jquery.js"></script>
+     <script type="text/javascript" src="slide.js"></script>
   </head>
 
   <body>
@@ -297,7 +48,8 @@
         </aside>
       </div>
     </div>
-    <div id="infowindow_template">
+    <div id="slide_out_info">
+    <a class="handle" href="#">Content</a>
     <h1>Air pollution trends in countries and cities</h1>
       In 2012, the <a href="http://www.who.int/mediacentre/news/releases/2014/air-pollution/en/" target="_blank">World Health Organization (WHO)</a> estimates 7 million people died - one in eight deaths - due to air pollution exposure. This map shows both national and city-level exposures to fine particulate matter or PM2.5, which is an air pollutant with human health consequences.<br><br>
 
@@ -343,12 +95,6 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
               <li  id="hide_cities" class="selected">Hide Cities</li>
           </ul>
         </div>
-        <div id="toggle_window">
-          <ul>
-            <li id="hide_window">Toggle Window</li>
-          </ul>
-        </div>
-        
       </div>
           
         
@@ -614,7 +360,6 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
             //Attached the CSS to the layer
             sublayer_city.setCartoCSS(style);
              sublayer_city.show();
-             $(".cartodb-legend:nth-child(2)").show();
 
             //Hide legend on click
             $("#legend_cities").removeClass('hidden');
@@ -625,15 +370,23 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
              sublayer_city.hide();
               var year = $('#layer_selector li.selected').attr('data');
               col1 = 'pm25_' + year;
-             $(".cartodb-legend:nth-child(2)").hide();
              $("#legend_cities").addClass('hidden');
            });
 
-          $("#hide_window").on("click", function(){
-            $("#infowindow_template").toggle();
-            $("#hide_window").toggleClass('selected');
 
-          });
+          //have the info tab slide out
+          $('#slide_out_info').tabSlideOut({
+            tabHandle: '.handle',                     //class of the element that will become your tab
+            pathToTabImage: 'slider.png', //path to the image for the tab //Optionally can be set using css
+            imageHeight: '200px',                     //height of tab image           //Optionally can be set using css
+            imageWidth: '50px',                       //width of tab image            //Optionally can be set using css
+            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
+            speed: 400,                               //speed of animation
+            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+            topPos: '30px',                          //position from the top/ use if tabLocation is left or right
+            leftPos: '0px',                          //position from left/ use if tabLocation is bottom or top
+            fixedPosition: true                      //options: true makes it stick(fixed position) on scroll
+        });
     </script>
 
 </script>
