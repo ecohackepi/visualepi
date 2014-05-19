@@ -3,122 +3,6 @@
   <head>
      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
      <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<<<<<<< HEAD
-    <style>
-      html, body, #map {
-        height: 700px;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        background-color: #3E7BB6;
-      }
-
-      #map {
-         background-color: #9abae0;
-         box-shadow: inset 1px 1px 5px 1px;
-      }
-      .selected {
-        background-color: #ff8a87;
-      } 
-
-      h1, 
-      #tool-tip,
-      #layer_selector li {
-          font-family: 'Montserrat', sans-serif;
-          font-weight: 400;
-      }
-      h1 {
-        text-align: center;
-        color: white;
-      }
-  
-
-
-      #layer_selector {
-        position: absolute;
-        top: 70px;
-        right: 350px;
-        padding: 0;
-      }
-
-      #layer_selector ul {
-        padding: 0; margin: 0;
-        list-style-type: none;
-      }
-      
-      #show_cities {cursor: pointer;}
-      #hide_cities {cursor: pointer;}
-
-      #layer_selector li {
-        border-bottom: 1px solid #999;
-        padding-left: 5px;
-        padding-right: 5px;
-        font-size: 13px;
-        color: #444;
-        cursor: pointer;
-        display: inline;
-        -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
-        transition: color 2s;
-      }
-
-      #layer_selector2 {
-        position: absolute;
-        top: 70px;
-        right: 150px;
-        padding: 0;
-      }
-
-      #layer_selector2 ul {
-        padding: 0; margin: 0;
-        list-style-type: none;
-      }
-
-      #layer_selector2 li {
-        border-bottom: 1px solid #999;
-        padding-left: 15px;
-        padding-right: 5px;
-        font-size: 13px;
-        color: #444;
-        cursor: pointer;
-        display: inline;
-        -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
-        transition: color 2s;
-      }
-
-      #layer_selector li:hover {
-        color: #3E7BB6;
-        cursor: pointer;
-      }
-
-      #layer_selector li.selected {
-        color: white;
-      }
-      #tool-tip {
-        position: absolute;
-        width: auto;
-        height: 55px;
-        background-color: white;
-        opacity: .9;
-        z-index: 50;
-        border-radius: 15px;
-        text-align: center;
-        color: #3E7BB6;
-        vertical-align: bottom;
-        font-size: 20px;
-        padding: 5px;
-      }
-      #tool-tip p {
-        margin-top: 5px;
-      }
-
-      #header_container { opacity: .7; height:60px; left:0; position:fixed; width:100%; top:0; }
-      #header{ margin:0 auto; width:940px; text-align:center; }
-    </style>
-  </head>
-
-  <body>
-    <h1>Pollution Over Time</h1>
-=======
      <link href='main_style.css' rel='stylesheet' type='text/css'>
      <link rel="stylesheet" media="(max-height: 700px)" href="small.css">
      <script type="text/javascript" src="jquery.js"></script>
@@ -127,7 +11,6 @@
 
   <body>
     
->>>>>>> bdd951ead21207107e2c750cab81ba095b6a5ac3
     <div id="map"></div>
     <div id="tool-tip"></div>
     <div id="legends">   
@@ -203,15 +86,7 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
             <li data="2010">2010</li>
             <li data="2011">2011</li>
             <li data="2012">2012</li>  
-<<<<<<< HEAD
-<<<<<<< HEAD:app/views/application/world_pollution.html.erb.html
           </ul>
-=======
-		      </ul>
->>>>>>> 76d05e7b3070c756ce3d1719c7f050dc777bb9ce:app/views/application/world_pollution.html.erb
-=======
-          </ul>
->>>>>>> bdd951ead21207107e2c750cab81ba095b6a5ac3
 
         </div>
         <div id="layer_selector2" class="cartodb-infobox">
@@ -224,15 +99,7 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
           
         
 
-<<<<<<< HEAD
-<<<<<<< HEAD:app/views/application/world_pollution.html.erb.html
   </body>
-=======
-	</body>
->>>>>>> 76d05e7b3070c756ce3d1719c7f050dc777bb9ce:app/views/application/world_pollution.html.erb
-=======
-  </body>
->>>>>>> bdd951ead21207107e2c750cab81ba095b6a5ac3
   <script type="cartocss/html" id="cities">
   /*City Styles*/
 
@@ -275,23 +142,11 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
 #who_georeferenced_clean [ pm_2_5 <= 15] {
   marker-fill: #fff74b;
 }
-<<<<<<< HEAD:app/views/application/world_pollution.html.erb.html
 
   </script>
 
-   <script type="cartocss/html" id="pm25_na">
-=======
-
-  </script>
-
-<<<<<<< HEAD
-	 <script type="cartocss/html" id="pm25_na">
->>>>>>> 76d05e7b3070c756ce3d1719c7f050dc777bb9ce:app/views/application/world_pollution.html.erb
-   /*City Styles*/
-=======
    <script type="cartocss/html" id="pm25_na">
    /*Country Styles*/
->>>>>>> bdd951ead21207107e2c750cab81ba095b6a5ac3
 
 #pm25_na{
   polygon-fill: #FFFFB2;
@@ -475,19 +330,13 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
           col1 = 'pm25_' + year;
           var style = $('#pm25_na').html().format(col1);
             layer.setCartoCSS(style);
-<<<<<<< HEAD:app/views/application/world_pollution.html.erb.html
-=======
             sublayer_city.hide();
-<<<<<<< HEAD
->>>>>>> 76d05e7b3070c756ce3d1719c7f050dc777bb9ce:app/views/application/world_pollution.html.erb
-=======
 
 
           $('#show_cities').removeClass();
           $('#hide_cities').addClass('selected');
           $(".cartodb-legend:nth-child(1)").show();
 
->>>>>>> bdd951ead21207107e2c750cab81ba095b6a5ac3
           }); 
         }
 
@@ -519,17 +368,9 @@ The <a href="http://www.epi.yale.edu/" target="_blank">Environmental Performance
           //Hide the cities on click
           $("#hide_cities").on("click", function(){
              sublayer_city.hide();
-<<<<<<< HEAD:app/views/application/world_pollution.html.erb.html
-=======
               var year = $('#layer_selector li.selected').attr('data');
-<<<<<<< HEAD
-              col = 'pm25_' + year;
-             console.log(col);
->>>>>>> 76d05e7b3070c756ce3d1719c7f050dc777bb9ce:app/views/application/world_pollution.html.erb
-=======
               col1 = 'pm25_' + year;
              $("#legend_cities").addClass('hidden');
->>>>>>> bdd951ead21207107e2c750cab81ba095b6a5ac3
            });
 
 
