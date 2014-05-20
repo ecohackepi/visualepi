@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'less-rails'
 gem 'capistrano', '2.15.5'
 group :development, :test do 
   gem 'rspec-rails'
