@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'less-rails'
-gem 'less-rails-bootstrap'
 gem 'capistrano', '2.15.5'
 group :development, :test do 
   gem 'rspec-rails'
