@@ -75,9 +75,9 @@ h5 {
 .header-wrap {
   padding-top: 90px;
   padding-bottom: 90px;
-  /*background: #150417 url('../images/head-stars.jpg') no-repeat center;*/
-  /*background: #fdfcf3 url('../images/manhattanskyline.jpg') no-repeat center;*/
-  background: #fdfcf3 url('../images/manhattanskyline.jpg') no-repeat center;
+  /*background: #150417 url('<%= image_url ('head-stars.jpg') %>') no-repeat center;*/
+  /*background: #fdfcf3 url('<%= image_url('manhattanskyline.jpg') %>') no-repeat center;*/
+  background: #fdfcf3 url('<%= image_url('manhattanskyline.jpg') %>') no-repeat center;
   background-size: cover;
 }
 .header-wrap .head-container h1 {
