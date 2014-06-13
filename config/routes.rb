@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'world_pollution' => 'application#world_pollution'
   get 'world_pollution2' => 'application#world_pollution2'
   get 'country_comparison' => 'application#country_comparison'
+  get 'visual' => 'application#radar_chart'
   get 'radar_chart' => 'application#radar_chart'
   get 'line_graph' => 'application#line_graph'
   get 'iso_code_list' => 'application#iso_code_list'
